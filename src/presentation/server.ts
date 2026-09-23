@@ -1,4 +1,4 @@
-import { CronJob } from "cron"
+import { CronService } from "./cron/cron-service"
 
  
 export class Server{
@@ -6,19 +6,16 @@ export class Server{
     public static start(){
         console.log('Server started....')
 
-        //instancia de cronjob
+        //Llamar a paquete CRON
 
-            const job = new CronJob(
-                '*/3 * * * * *', // cronTime
-                () => {
-
+            CronService.createJob(
+                '*/5 * * * * *',
+                ()=>{
                     const date = new Date();
+                    console.log('Este mensaje aparece cada 5 segundos', date)
+                }
+            )
 
-                    console.log('Este mensaje aparece cada 2 segundos', date);
-                },
-            );      
-            
-            job.start();
     }
 }
 
