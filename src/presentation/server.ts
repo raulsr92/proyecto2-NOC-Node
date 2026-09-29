@@ -13,7 +13,14 @@ export class Server{
                 '*/5 * * * * *',
                 ()=>{
                     
-                    new CheckService().execute('https://www.google.com/')
+                    const url = 'https://www.google.com/';
+                    new CheckService(
+
+                        ()=>console.log(`${url} is OK`),
+                        
+                        (error)=> console.log(error)
+
+                    ).execute(url)
                     //new CheckService().execute('http://localhost:3000/posts')
 
                 }
