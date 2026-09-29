@@ -13,7 +13,8 @@ export class Server{
                 '*/5 * * * * *',
                 ()=>{
                     
-                    new CheckService().execute('https://www.googe.com/')
+                    new CheckService().execute('https://www.google.com/')
+                    //new CheckService().execute('http://localhost:3000/posts')
 
                 }
             )
