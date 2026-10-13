@@ -19,4 +19,20 @@ export class LogEntity{
 
     }
 
+    static fromJson = (json:string):LogEntity=>{
+
+       const {level, message, createdAt} = JSON.parse(json)
+
+       if(!message)throw new Error('Message is required')
+       if(!level)throw new Error('Level is required')
+
+       const log = new LogEntity(level,message)
+
+       //establecer la fecha
+
+       log.createdAt=new Date(createdAt)
+
+       return log
+    }
+
 }

@@ -36,21 +36,55 @@ export class FileSystemDataSource implements LogDataSource{
 
         fs.appendFileSync(this.allLogsPath, logAsJson)
 
-        if (newLog.level=== LogSeverityLevel.low) return;
+        if (newLog.level=== LogSeverityLevel.low) return; //retornamos, porque los low solo se guardan en archivo all logs
 
         if (newLog.level=== LogSeverityLevel.medium){
-            fs.appendFileSync(this.mediumLogsPath,logAsJson)
+            fs.appendFileSync(this.mediumLogsPath,logAsJson)  // los de severidad "medium" si se guardan en 2 archivos: all y propio
         }
 
         if (newLog.level=== LogSeverityLevel.high){
 
-            fs.appendFileSync(this.highLogsPath,logAsJson)
+            fs.appendFileSync(this.highLogsPath,logAsJson) // los de severidad "medium" si se guardan en 2 archivos: all y propio
+        
         }
 
     }
 
-    getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
-        throw new Error("Method not implemented.");
+    //método privado a utilizar en getLogs 
+
+    private getLogsFromFile = (path:string):LogEntity[]=>{
+
+        const content = fs.readFileSync(path, "utf-8")
+
+        const stringLogs = content.split("\n")
+
+        const logs = stringLogs.map((log)=>{
+           return LogEntity.fromJson(log)
+        })
+
+        return logs
+
+    }
+
+    async getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
+
+        switch (severityLevel) {
+            case LogSeverityLevel.low:
+                
+                return this.getLogsFromFile(this.allLogsPath);
+
+            case LogSeverityLevel.medium:
+                
+                return this.getLogsFromFile(this.mediumLogsPath);
+
+            case LogSeverityLevel.high:
+                
+                return this.getLogsFromFile(this.highLogsPath);
+
+            default:
+                throw new Error(`${severityLevel} not implemented`)
+
+        }
     }
 
 }
