@@ -14,7 +14,7 @@ export class FileSystemDataSource implements LogDataSource{
 
     private createLogsFiles = () => {
         // 1. Si no existe el directorio 'logs/', lo crea
-            if (fs.existsSync(this.logPath)) {
+            if (!fs.existsSync(this.logPath)) {
                 fs.mkdirSync(this.logPath)
             }
         // 2. Si no existen los archivos de logs, los crea vacíos
@@ -50,21 +50,21 @@ export class FileSystemDataSource implements LogDataSource{
 
     }
 
-    //método privado a utilizar en getLogs 
+        //método privado a utilizar en getLogs 
 
-    private getLogsFromFile = (path:string):LogEntity[]=>{
+        private getLogsFromFile = (path:string):LogEntity[]=>{
 
-        const content = fs.readFileSync(path, "utf-8")
+            const content = fs.readFileSync(path, "utf-8")
 
-        const stringLogs = content.split("\n")
+            const stringLogs = content.split("\n")
 
-        const logs = stringLogs.map((log)=>{
-           return LogEntity.fromJson(log)
-        })
+            const logs = stringLogs.map((log)=>{
+            return LogEntity.fromJson(log)
+            })
 
-        return logs
+            return logs
 
-    }
+        }
 
     async getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
 
