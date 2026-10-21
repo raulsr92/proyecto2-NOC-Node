@@ -18,10 +18,12 @@ export class Server{
                 '*/5 * * * * *',
                 ()=>{
                     
-                    const url = 'http://localhost:3000';
+                    const url = 'http://google.com';
                     new CheckService(
                         fileSystemLogRepository,
+
                         ()=>console.log(`${url} is OK`),
+
                         (error)=> console.log(error)
                     ).execute(url)
                     //new CheckService().execute('http://localhost:3000/posts')

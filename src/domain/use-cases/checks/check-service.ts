@@ -9,8 +9,8 @@ interface CheckServiceUseCase{
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Types
 
-type SuccessCallback = () => void
-type ErrorCallback = (error: string)=> void
+type SuccessCallback = (() => void) | undefined
+type ErrorCallback = ((error: string)=> void) | undefined
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Clase de caso de uso 
 
@@ -33,7 +33,7 @@ export class CheckService implements CheckServiceUseCase{
                 const log = new LogEntity(LogSeverityLevel.low, `Service ${url} working`)
                 this.logRepository.saveLog(log)    
 
-            this.successCallback()
+            this.successCallback && this.successCallback()
             //console.log(`${url} is OK`)
             return true
 
@@ -43,7 +43,7 @@ export class CheckService implements CheckServiceUseCase{
                 const log = new LogEntity(LogSeverityLevel.high, errorMessage)
                 this.logRepository.saveLog(log)
             
-            this.erroCallback(errorMessage);
+            this.erroCallback && this.erroCallback(errorMessage);
             return false
         }
     }
